@@ -1,24 +1,39 @@
 package task.generics;
-
+import org.w3c.dom.ls.LSOutput;
+import task.collection.Collection;
 import task.models.BigBox;
 import task.models.MediumBox;
 import task.models.MicroBox;
 import task.models.SmallBox;
-
-public class Generics {
-
-
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+public class Generics extends Collection {
   public static void main(String[] args) {
-
   }
 
   //TODO: реализуйте Метод для проверки наличия коробки в списке (Producer)
+  public static <T extends BigBox> boolean box(List<T> list, T box) {
+    return list.contains(box);
+  }
 
   //TODO: реализуйте Метод для добавления коробок в список (Consumer)
+  public static <T extends MediumBox> boolean addBoxToList(List<T> list, T boxes) {
+    return list.add(boxes);
+  }
 
-  //TODO: реализуйте Метод для печати списка коробок (Producer)
+  //TODO: реализуйте Метод для печати списка коробок (Producer)  }
+  public static <T extends BigBox> void printBoxList(List<T> list) {
+    for (T box : list) {
+      System.out.println(box);
+    }
+  }
 
   //TODO: реализуйте Метод для копирования коробок из одного списка в другой (Producer и Consumer)
+  public static <T> void copyBoxes(List<? extends T> sourceList, List<? super T> destinationList) {
+    destinationList.addAll(sourceList);
+    System.out.println(destinationList);
+  }
 
   private static BigBox generateBigBox() {
     BigBox bigBox = new BigBox();
