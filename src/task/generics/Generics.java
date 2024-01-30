@@ -13,17 +13,17 @@ public class Generics extends Collection {
   }
 
   //TODO: реализуйте Метод для проверки наличия коробки в списке (Producer)
-  public static <T extends Product> boolean box(List<T> list, T box) {
+  public static <T extends BigBox> boolean box(List<T> list, T box) {
     return list.contains(box);
   }
 
   //TODO: реализуйте Метод для добавления коробок в список (Consumer)
-  public static <T extends Collection.Student1> boolean addBoxToList(List<T> list, T boxes) {
+  public static <T extends MediumBox> boolean addBoxToList(List<T> list, T boxes) {
     return list.add(boxes);
   }
 
   //TODO: реализуйте Метод для печати списка коробок (Producer)  }
-  public static <T extends Collection.Product> void printBoxList(List<T> list) {
+  public static <T extends BigBox> void printBoxList(List<T> list) {
     for (T box : list) {
       System.out.println(box);
     }

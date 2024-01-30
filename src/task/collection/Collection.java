@@ -1,7 +1,11 @@
 package task.collection;
 import task.models.BigBox;
+import org.w3c.dom.ls.LSOutput;
+import task.models.BigBox;
+import task.models.MediumBox;
 import javax.swing.*;
 import java.util.*;
+import static java.lang.reflect.Array.set;
 import static java.util.Collections.reverseOrder;
 import static task.generics.Generics.*;
 public class Collection {
@@ -10,17 +14,24 @@ public class Collection {
         List<Integer> integerList2 = new ArrayList<>(List.of(2, 5, 6, 4));
         List<String> stringList = List.of("Привет", "Пока", "hello", "Bay-bay", "2");//set содержит уникальные значения
         Set<Integer> integerSet2 = Set.of(2, 4, 5);
+
         Map<Integer, String> mapa = new HashMap<>();//ключ/значение внутри лежит массив LinkedList
         Queue<Integer> queue = new LinkedList<>(); //Очередь первый зашел - вышел первый.
         Deque<Integer> stack = new LinkedList<>(); // stack первый зашел - вышел последний.
+
+        String keyValue = mapa.put(4, "Коса");
+        Integer key = 4;//ключ/значение внутри лежит массив LinkedList
+
         List<Order> orders = new ArrayList<>();
         orders.add(new Order(1, "Лояльный", 500));
         orders.add(new Order(2, "Мега-Лояльный", 1000));
         orders.add(new Order(3, "Негативный", 250));
+
         List<Task> tasks = new ArrayList<>();
         tasks.add(new Task(1, "Сложение", "Выполнена"));
         tasks.add(new Task(2, "Умножение", "Невыполена"));
         tasks.add(new Task(3, "Деление", "Выполнена"));
+
         Map<Student, Integer> student = new HashMap<>();
         Student st1 = new Student("Денис", 27);
         Student st2 = new Student("Павел", 35);
@@ -28,33 +39,43 @@ public class Collection {
         student.put(st1, 27);
         student.put(st2, 35);
         student.put(st3, 18);
+
         List<Product> list = new ArrayList<>();
         list.add(new Product(1, "Яйцо", 60));
         list.add(new Product(2, "Хлеб", 0));
         list.add(new Product(3, "Кортошка", 50));
+
         List<Student1> list1 = new ArrayList<>();
         list1.add(new Student1("Максим", 25));
         list1.add(new Student1("Павел", 100));
         list1.add(new Student1("Николай", 53));
         list1.add(new Student1("Александр", 47));
+
         Set<String> stringSet2 = new HashSet<>();
         stringSet2.add("Hello");
         stringSet2.add("2");
         stringSet2.add("Hello");
-        List<Box> sourceList = new ArrayList<>();
-        List<Box> destinationList = new ArrayList<>();
 
-        maxElement(integerList);
+        List<BigBox> list2 = new ArrayList<>();
+        list2.add(new BigBox());
+
+        List<MediumBox> list3 = new ArrayList<>();
+        list3.add(new MediumBox());
+
+        String str = "Дом";
+
+        System.out.println(maxElement(integerList));
         removeDuplicates(stringList);
         sortList(integerList2);
-        set(stringSet2);
+        set(stringSet2, str);
         intersectionSets(stringSet2, integerSet2);
         removingFromSet(stringSet2, integerSet2);
-        keyMap(mapa);
-        valuesKey(mapa);
-        removeMap(mapa);
-        addQueue(queue);
-        removeQueue(queue);
+        keyMap(mapa, keyValue);
+        valuesKey(mapa, key);
+        removeMap(mapa, keyValue);
+        addQueue(queue, key);
+        removeQueue(queue, key);
+
         emptyQueue(queue);
         largestAmount(orders);
         getTotalAmount(orders);
@@ -66,17 +87,24 @@ public class Collection {
         productStock(list);
         attendanceStudent(list1);
         averageAttendance(list1);
-        System.out.println(box(list, new Product(4, "курочка", 4)));
-        System.out.println(addBoxToList(list1, new Student1("Андрей", 80)));
 
-        printBoxList(list);
-        copyBoxes(sourceList, destinationList);
+
+        BigBox box = new BigBox();
+        System.out.println(box(list2, box));
+
+        MediumBox boxes = new MediumBox();
+        System.out.println(addBoxToList(list3, boxes));
+        printBoxList(list2);
+        copyBoxes(list3, list3);
+
 
     }
     // TODO: Для каждой задачи сгенерируйте самостоятельно коллекции и карты для тестирования своих методов
     // TODO: Найти наибольший элемент в списке.
 
-    private static void maxElement(List<Integer> integerList) {
+
+    private static int maxElement(List<Integer> integerList) {
+
         int max = integerList.get(0);
         for (int i = 0; i < integerList.size(); i++) {
             int a = integerList.get(i);
@@ -84,7 +112,7 @@ public class Collection {
                 max = a;
             }
         }
-        System.out.println(max);
+        return max;
     }
 
     // TODO: Удалить все дубликаты из списка.
@@ -100,8 +128,10 @@ public class Collection {
     }
 
     // TODO: Проверить, содержит ли множество определенный элемент.
-    private static void set(Set<String> stringSet) {
-        if (stringSet.contains("hello")) {
+
+
+    private static void set(Set<String> stringSet, String str) {
+        if (stringSet.contains(str)) {
             System.out.println("В данном множестве есть заданная  строка: " + stringSet);
         } else {
             System.out.println("В данном множестве нет заданной строки!");
@@ -124,11 +154,10 @@ public class Collection {
 
 
     // TODO: Проверить, содержит ли карта определенный ключ.
-    private static void keyMap(Map<Integer, String> mapa) {
-        mapa.put(1, "Den");
-        mapa.put(2, "Ron");
-        mapa.put(3, "John");
-        if (mapa.containsKey(2)) {
+
+
+    private static void keyMap(Map<Integer, String> mapa, String keyValue) {
+        if (mapa.containsKey(keyValue)) {
             System.out.println("карта содержит ключ");
         } else {
             System.out.println("карта не содержит данный ключ");
@@ -137,53 +166,48 @@ public class Collection {
     }
 
     // TODO: Получить все значения, связанные с определенным ключом.
-    private static void valuesKey(Map<Integer, String> mapa) {
-        mapa.put(1, "Den");
-        mapa.put(2, "Ron");
-        mapa.put(3, "John");
-        String val = mapa.get(3);
-        if (mapa.containsKey(3)) {
-            System.out.println("Значения определнного ключа " + val);
+
+
+    private static void valuesKey(Map<Integer, String> mapa, Integer key) {
+        List<String> values = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : mapa.entrySet()) {
+            if (entry.getKey().equals(key)) {
+                values.add(entry.getValue());
+            }
+        }
+        if (mapa.containsKey(key)) {
+            System.out.println("Значения определнного ключа " + key + values);
         } else {
             System.out.println("Ключ не найден!");
         }
     }
 
     // TODO: Удалить все записи из карты, у которых значение равно определенному значению.
-    private static void removeMap(Map<Integer, String> mapa) {
-        mapa.put(1, "Den");
-        mapa.put(2, "Ron");
-        mapa.put(3, "John");
+
+
+    private static void removeMap(Map<Integer, String> mapa, String keyValue) {
         Iterator<Map.Entry<Integer, String>> mapIterator = mapa.entrySet().iterator();
         while (mapIterator.hasNext()) {
             Map.Entry<Integer, String> iterator = mapIterator.next();
-            if (iterator.getValue().equals("Ron")) {
+            if (iterator.getValue().equals(keyValue)) {
                 mapIterator.remove();
             }
         }
     }
 
     // TODO: Добавить элемент в очередь.
-    private static void addQueue(Queue<Integer> queue) {
-        queue.add(1);
-        queue.add(2);
-        queue.add(3);
+    private static void addQueue(Queue<Integer> queue, Integer key) {
+        queue.add(key);
     }
 
     // TODO: Получить и удалить первый элемент из очереди.
-    private static void removeQueue(Queue<Integer> queue) {
-        queue.add(1);
-        queue.add(2);
-        System.out.println(queue.poll());
-        queue.remove();// удаляет первый элемнет из очереди если нужно с конца то это steck!
-
+    private static void removeQueue(Queue<Integer> queue, Integer key) {
+        queue.remove(key); // удаляет  элемнет из очереди если нужно с конца то это steck!
 
     }
 
     // TODO: Проверить, пуста ли очередь.
     private static void emptyQueue(Queue<Integer> queue) {
-        queue.add(1);
-        queue.add(2);
         if (!queue.isEmpty()) {
             System.out.println("Очередь не пуста" + queue.poll());
         } else {
